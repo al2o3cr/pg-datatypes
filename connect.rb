@@ -13,19 +13,7 @@ ActiveRecord::Base.logger.formatter = proc do |severity, datetime, progname, msg
 end
 
 gem 'dynamometer'
-require 'dynamometer/dynamic_attributes_in_where'
-require 'dynamometer/dynamic_attributes'
+require 'dynamometer'
 
-# HAX HAX HAX
-# dynamometer does not play nice outside of Rails yet
-
-ActiveRecord::Querying.module_eval do
-  delegate :where_dynamic_attributes, to: :all
-end
-
-ActiveRecord::Base.class_eval do
-  def self.partition_wheres(args); [args,{}]; end
-end
-
-ActiveRecord::Relation.send(:include, Dynamometer::DynamicAttributesInWhere)
+Dynamometer.attach
 
